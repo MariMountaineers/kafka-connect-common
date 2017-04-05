@@ -199,7 +199,7 @@ trait ConverterUtil {
     * @param record A ConnectRecord to extract the payload value from
     * @return A json string for the payload of the record
     **/
-  def convertValueToJson[T <: ConnectRecord[T]](record: ConnectRecord[T]): JsonNode = {
+  def convertValueToJson(record: ConnectRecord): JsonNode = {
     simpleJsonConverter.fromConnectData(record.valueSchema(), record.value())
   }
 
@@ -209,7 +209,7 @@ trait ConverterUtil {
     * @param record A ConnectRecord to extract the payload value from
     * @return A json string for the payload of the record
     **/
-  def convertKeyToJson[T <: ConnectRecord[T]](record: ConnectRecord[T]): JsonNode = {
+  def convertKeyToJson(record: ConnectRecord): JsonNode = {
     simpleJsonConverter.fromConnectData(record.keySchema(), record.key())
   }
 
@@ -241,10 +241,10 @@ trait ConverterUtil {
     * @param record ConnectRecord to convert
     * @return a GenericRecord
     **/
-  def convertValueToGenericAvro[T <: ConnectRecord[T]](record: ConnectRecord[T]): GenericRecord = {
+  def convertValueToGenericAvro(record: ConnectRecord): GenericRecord = {
     val avro = avroData.fromConnectData(record.valueSchema(), record.value())
     avro.asInstanceOf[GenericRecord]
   }
 
-  def convertAvroToConnect(topic: String, obj: Array[Byte]) = avroConverter.toConnectData(topic, obj)
+  def convertAvroToConnect(topic: String, obj: Array[Byte]): SchemaAndValue = avroConverter.toConnectData(topic, obj)
 }
